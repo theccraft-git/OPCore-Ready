@@ -142,7 +142,7 @@ echo If you want to repeat, type "b". To proceed, type "p"
 set /p usb=
 if /i "%usb%" == "b" goto :3
 
-:: USB2EFI by TheCCraft
+:: USB2EFI by @theccraft-git
 :4
 cls
 echo ===========================================================================
@@ -311,6 +311,7 @@ cls
 echo ===========================================================================
 echo Thank you for using OPCore-Ready.
 echo ===========================================================================
-echo by TheCCraft
+echo by @theccraft-git
 pause
+
 exit
