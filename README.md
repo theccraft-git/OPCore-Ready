@@ -13,9 +13,7 @@
 
 ## 📸 Screenshots
 
-| Startup Screen 
-| :--- | :--- |
-| <img width="1470" height="692" alt="image" src="https://github.com/user-attachments/assets/74fd7f29-0da3-49b9-8b16-e764d65a3181" />
+ <img width="1470" height="692" alt="image" src="https://github.com/user-attachments/assets/74fd7f29-0da3-49b9-8b16-e764d65a3181" />
  <img width="1222" height="690" alt="image" src="https://github.com/user-attachments/assets/e8aa3375-2dc7-483f-a21f-eb0cf34638c0" />
 
 
