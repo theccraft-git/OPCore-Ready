@@ -16,6 +16,7 @@
   </p>
   
   <p align="center">
+    <a href="https://trendshift.io/repositories/15410" target="_blank"><img src="https://trendshift.io/api/badge/repositories/15410" alt="lzhoang2801%2FOpCore-Simplify | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
   </p>
 </div>
 
@@ -82,7 +83,7 @@
 ## 🚀 **How To Use**
 
 1. **Download OpCore-Ready**:
-   - Click **Code** → **Download ZIP**, or download directly via this [link](https://github.com/lzhoang2801/OpCore-Simplify/archive/refs/heads/main.zip).  
+   - Click **Code** → **Download ZIP**, or download directly via this [link](https://github.com/theccraft-git/OPCore-Ready/archive/refs/heads/main.zip).  
    - Extract the downloaded ZIP file to your desired location.
 
    ![Download OpCore-Ready](https://i.imgur.com/mcE7OSX.png)
@@ -151,10 +152,11 @@ OpCore-Ready is by [theccraft-git](https://github.com/theccraft-git).
 
 - Many thanks to [lzhoang2801](https://github.com/lzhoang2801) for the base script, [OpCore-Simplify](https://github.com/lzhoang2801/OpCore-Simplify).
 - Many thanks to [dhinakg](https://github.com/dhinakg) for the base logic of [USBToolBox](https://github.com/USBToolBox/tool).
+- Many thanks to [Acidanthera](https://github.com/acidanthera) for the tool: [macrecovery](https://github.com/acidanthera/OpenCorePkg/tree/master/Utilities/macrecovery).
 - [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg) and the kexts selected by OpCore-Simplify are the backbone of the EFI build.
 - [SSDTTime](https://github.com/corpnewt/SSDTTime) – SSDT patching utilities.
 
 ## 📞 **Contact**
 
 **theccraft-git**
-> GitHub [@theccraft-git](https://github.com/theccraft-git)
+> GitHub [theccraft-git/OPCore-Ready](https://github.com/theccraft-git/OPCore-Ready)

@@ -8,6 +8,7 @@ from Scripts import hardware_customizer
 from Scripts import kext_maestro
 from Scripts import report_validator
 from Scripts import run
+from Scripts import recovery_downloader
 from Scripts import smbios
 from Scripts import usb_mapper
 from Scripts import utils
@@ -30,6 +31,7 @@ class OCPE:
         self.h = hardware_customizer.HardwareCustomizer()
         self.k = kext_maestro.KextMaestro()
         self.s = smbios.SMBIOS()
+        self.recovery = recovery_downloader.RecoveryDownloader(self.u)
         self.usb = usb_mapper.USBMapper(self.u)
         self.v = report_validator.ReportValidator()
         self.r = run.Run()
@@ -320,7 +322,7 @@ class OCPE:
                 
         return requirements
 
-    def before_using_efi(self, org_hardware_report, hardware_report):
+    def before_using_efi(self, org_hardware_report, hardware_report, macos_version):
         self.u.head("Before Using EFI")
         print("")                 
         print("\033[93mPlease complete the following steps:\033[0m")
@@ -345,6 +347,13 @@ class OCPE:
             if choice in ("", "y", "yes"):
                 self.usb.run(self.result_dir)
         print("")
+        print("* macOS Recovery:")
+        print("    - {}".format(os_data.get_macos_name_by_darwin(macos_version) or macos_version))
+        print("")
+        choice = self.u.request_input("Download this macOS Recovery image with macrecovery? (Yes/no): ").strip().lower()
+        if choice in ("", "y", "yes"):
+            self.recovery.download(macos_version)
+        print("")
         self.u.request_input()
         self.u.open_folder(self.result_dir)
 
@@ -364,6 +373,7 @@ class OCPE:
             print("")
             print("  Many thanks to lzhoang2801 for the base script, OpCore-Simplify.")
             print("  Many thanks to dhinakg for the base logic of USBToolBox.")
+            print("  Many thanks to Acidanthera for the tool: macrecovery")
             print("")
             print("\033[1;96mUSB ports:\033[0m choose \033[1;96m7\033[0m to map them here. That builds UTBMap.kext and replaces UTBDefault in config.plist.")
             print("")
@@ -387,6 +397,7 @@ class OCPE:
             print("5. Customize SMBIOS Model")
             print("6. Build OpenCore EFI")
             print("7. Map USB Ports")
+            print("8. Download macOS Recovery")
             print("")
             print("Q. Quit")
             print("")
@@ -396,6 +407,17 @@ class OCPE:
                 self.u.exit_program()
             if option == "7":
                 self.usb.run(self.result_dir)
+                continue
+            if option == "8":
+                if not macos_version:
+                    self.u.head("Download macOS Recovery")
+                    print("")
+                    print("Choose a macOS version first. Select a hardware report, then pick the version.")
+                    print("Option 8 downloads that version with macrecovery.py.")
+                    print("")
+                    self.u.request_input()
+                else:
+                    self.recovery.download(macos_version)
                 continue
            
             if option == "1":
@@ -449,7 +471,7 @@ class OCPE:
                     continue
                 
                 self.build_opencore_efi(customized_hardware, disabled_devices, smbios_model, macos_version, needs_oclp)
-                self.before_using_efi(hardware_report, customized_hardware)
+                self.before_using_efi(hardware_report, customized_hardware, macos_version)
 
                 self.u.head("Result")
                 print("")
@@ -459,10 +481,7 @@ class OCPE:
                 self.u.request_input("Press Enter to main menu...")
 
 if __name__ == '__main__':
-    # This local build adds in-app USB mapping. The upstream updater would
-    # replace OpCore-Simplify.py and remove that menu before it appears.
-    local_usb_mapper = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Scripts", "usb_mapper.py")
-    update_status = "skipped" if os.path.isfile(local_usb_mapper) else updater.Updater().run_update()
+    update_status = updater.Updater().run_update()
     if update_status == "updated":
         os.execv(sys.executable, [sys.executable] + sys.argv)
     if update_status == "recovery_required":

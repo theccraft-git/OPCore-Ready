@@ -49,7 +49,8 @@ class Updater:
             raise ValueError("Unsafe update path: {}".format(name))
         return (len(parts) > 1 and parts[0] == "Scripts"
                 and not any(part.startswith(".") or part in ("__pycache__", "OCK_Files", "Results") for part in parts)
-                or name in ("OpCore-Simplify.py", "OpCore-Simplify.bat", "OpCore-Simplify.command",
+                or name in ("OpCore-Ready.py", "OpCore-Ready.bat", "OpCore-Ready.command",
+                            "OpCore-Simplify.py", "OpCore-Simplify.bat", "OpCore-Simplify.command",
                             "updater.py", "README.md", "LICENSE"))
 
     def _destination(self, name):
@@ -76,16 +77,16 @@ class Updater:
 
     def download_update(self, sha, workspace):
         archive_path = workspace / "update.zip"
-        url = "https://github.com/lzhoang2801/OpCore-Simplify/archive/{}.zip".format(
+        url = "https://github.com/theccraft-git/OPCore-Ready/archive/{}.zip".format(
             sha)
-        self.utils.progress_bar("Update OpCore Simplify", self.update_steps, 0)
+        self.utils.progress_bar("Update OpCore-Ready", self.update_steps, 0)
         if not self.fetcher.download_and_save_file(url, str(archive_path)):
             raise RuntimeError("Could not download the update package.")
         staged = workspace / "staged"
         files = {}
         seen = set()
-        prefix = "OpCore-Simplify-{}/".format(sha)
-        self.utils.progress_bar("Update OpCore Simplify", self.update_steps, 1)
+        prefix = "OPCore-Ready-{}/".format(sha)
+        self.utils.progress_bar("Update OpCore-Ready", self.update_steps, 1)
         with zipfile.ZipFile(archive_path) as archive:
             entries = archive.infolist()
             if len(entries) > 10000 or sum(entry.file_size for entry in entries) > 512 * 1024 * 1024:
@@ -113,7 +114,7 @@ class Updater:
                 if name.endswith(".command"):
                     target.chmod(0o755)
                 files[name] = self._hash(target)
-        for required in ("OpCore-Simplify.py", "updater.py", "Scripts/github.py", "Scripts/utils.py"):
+        for required in ("OpCore-Ready.py", "updater.py", "Scripts/github.py", "Scripts/utils.py"):
             if required not in files:
                 raise ValueError(
                     "Incomplete update archive: missing {}".format(required))
@@ -144,7 +145,7 @@ class Updater:
             [manifest_name, "sha_version.txt"]
         backup = workspace / "backup"
         existed = {}
-        self.utils.progress_bar("Update OpCore Simplify", self.update_steps, 2)
+        self.utils.progress_bar("Update OpCore-Ready", self.update_steps, 2)
         for name in names:
             path = self._destination(name)
             if manifest_path.exists() and name in files and name not in previous and path.exists():
@@ -160,7 +161,7 @@ class Updater:
         changed = []
         try:
             self.utils.progress_bar(
-                "Update OpCore Simplify", self.update_steps, 3)
+                "Update OpCore-Ready", self.update_steps, 3)
             for name in names:
                 destination = self._destination(name)
                 destination.parent.mkdir(parents=True, exist_ok=True)
@@ -204,7 +205,7 @@ class Updater:
         try:
             current = self.get_current_sha_version()
             print("Checking for updates...")
-            latest = self.github.get_commits("lzhoang2801", "OpCore-Simplify")
+            latest = self.github.get_commits("theccraft-git", "OPCore-Ready")
         except Exception as error:
             print(
                 "\033[1;93mCould not check for updates. You can continue using the installed version.\033[0m")
@@ -261,7 +262,7 @@ class Updater:
                     print("Could not remove update workspace {}: {}".format(
                         workspace, error))
         self.utils.progress_bar(
-            "Update OpCore Simplify", self.update_steps, len(self.update_steps), done=True)
+            "Update OpCore-Ready", self.update_steps, len(self.update_steps), done=True)
         print("\033[92mUpdate completed successfully!\033[0m")
         print("")
         print("  Previous Version: {}".format(
