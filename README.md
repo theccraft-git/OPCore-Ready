@@ -1,6 +1,7 @@
 <br/>
 <div align="center">
-  <h3 align="center">OpCore Simplify</h3>
+  <h3 align="center">OpCore-Ready</h3>
+  <p align="center">by theccraft-git</p>
 
   <p align="center">
     A specialized tool that streamlines <a href="https://github.com/acidanthera/OpenCorePkg">OpenCore</a> EFI creation by automating the essential setup process and providing standardized configurations. Designed to reduce manual effort while ensuring accuracy in your Hackintosh journey.
@@ -20,7 +21,7 @@
 </div>
 
 > [!WARNING]
-> While OpCore Simplify significantly reduces setup time, the Hackintosh journey still requires:
+> While OpCore-Ready significantly reduces setup time, the Hackintosh journey still requires:
 > - Understanding basic concepts from the [Dortania Guide](https://dortania.github.io/OpenCore-Install-Guide/)
 > - Testing and troubleshooting during the installation process
 > - Patience and persistence in resolving any issues that arise
@@ -81,18 +82,18 @@
 
 ## 🚀 **How To Use**
 
-1. **Download OpCore Simplify**:
+1. **Download OpCore-Ready**:
    - Click **Code** → **Download ZIP**, or download directly via this [link](https://github.com/lzhoang2801/OpCore-Simplify/archive/refs/heads/main.zip).  
    - Extract the downloaded ZIP file to your desired location.
 
-   ![Download OpCore Simplify](https://i.imgur.com/mcE7OSX.png)
+   ![Download OpCore-Ready](https://i.imgur.com/mcE7OSX.png)
 
-2. **Running OpCore Simplify**:
-   - On **Windows**, run `OpCore-Simplify.bat`.
-   - On **macOS**, run `OpCore-Simplify.command`.
-   - On **Linux**, run `OpCore-Simplify.py` with existing Python interpreter.
+2. **Running OpCore-Ready**:
+   - On **Windows**, run `OpCore-Ready.bat`.
+   - On **macOS**, run `OpCore-Ready.command`.
+   - On **Linux**, run `OpCore-Ready.py` with an existing Python interpreter.
 
-   ![OpCore Simplify Menu](https://i.imgur.com/vTr1V9D.png)
+   ![OpCore-Ready Menu](https://i.imgur.com/vTr1V9D.png)
 
 3. **Selecting hardware report**:
    - On Windows, there will be an option for `E. Export hardware report`. It's recommended to use this for the best results with your hardware configuration and BIOS at the time of building.
@@ -106,10 +107,10 @@
 
 4. **Selecting macOS Version and Customizing OpenCore EFI**:
    - By default, the latest compatible macOS version will be selected for your hardware.
-   - OpCore Simplify will automatically apply essential ACPI patches and kexts. 
+   - OpCore-Ready will automatically apply essential ACPI patches and kexts. 
    - You can manually review and customize these settings as needed.
 
-   ![OpCore Simplify Menu](https://i.imgur.com/TSk9ejy.png)
+   ![OpCore-Ready Menu](https://i.imgur.com/TSk9ejy.png)
 
 5. **Building OpenCore EFI**:
    - Once you've customized all options, select **Build OpenCore EFI** to generate your EFI.
@@ -147,16 +148,14 @@ Distributed under the BSD 3-Clause License. See `LICENSE` for more information.
 
 ## 🙌 **Credits**
 
-- [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg) and [kexts](https://github.com/lzhoang2801/OpCore-Simplify/blob/main/Scripts/datasets/kext_data.py) – The backbone of this project.
+OpCore-Ready is by [theccraft-git](https://github.com/theccraft-git).
+
+- Many thanks to [lzhoang2801](https://github.com/lzhoang2801) for the base script, [OpCore-Simplify](https://github.com/lzhoang2801/OpCore-Simplify).
+- Many thanks to [dhinakg](https://github.com/dhinakg) for the base logic of [USBToolBox](https://github.com/USBToolBox/tool).
+- [OpenCorePkg](https://github.com/acidanthera/OpenCorePkg) and the kexts selected by OpCore-Simplify are the backbone of the EFI build.
 - [SSDTTime](https://github.com/corpnewt/SSDTTime) – SSDT patching utilities.
 
 ## 📞 **Contact**
 
-**Hoang Hong Quan**
-> Facebook [@macforce2601](https://facebook.com/macforce2601) &nbsp;&middot;&nbsp;
-> Telegram [@lzhoang2601](https://t.me/lzhoang2601) &nbsp;&middot;&nbsp;
-> Email: lzhoang2601@gmail.com
-
-## 🌟 **Star History**
-
-[![Star History Chart](https://star-history.dera.page/svg?repos=lzhoang2801/OpCore-Simplify&type=Date)](https://star-history.dera.page/#lzhoang2801/OpCore-Simplify&Date)
+**theccraft-git**
+> GitHub [@theccraft-git](https://github.com/theccraft-git)

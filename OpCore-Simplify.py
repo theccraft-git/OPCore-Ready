@@ -9,6 +9,7 @@ from Scripts import kext_maestro
 from Scripts import report_validator
 from Scripts import run
 from Scripts import smbios
+from Scripts import usb_mapper
 from Scripts import utils
 import updater
 import os
@@ -20,7 +21,7 @@ import time
 
 class OCPE:
     def __init__(self):
-        self.u = utils.Utils("OpCore Simplify")
+        self.u = utils.Utils("OpCore-Ready")
         self.u.clean_temporary_dir()
         self.ac = acpi_guru.ACPIGuru()
         self.c = compatibility_checker.CompatibilityChecker()
@@ -29,6 +30,7 @@ class OCPE:
         self.h = hardware_customizer.HardwareCustomizer()
         self.k = kext_maestro.KextMaestro()
         self.s = smbios.SMBIOS()
+        self.usb = usb_mapper.USBMapper(self.u)
         self.v = report_validator.ReportValidator()
         self.r = run.Run()
         self.result_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Results")
@@ -241,6 +243,9 @@ class OCPE:
         self.u.progress_bar(title, steps, 3)
         self.co.genarate(hardware_report, disabled_devices, smbios_model, macos_version, needs_oclp, self.k.kexts, config_data)
         self.u.write_file(config_file, config_data)
+        if self.usb.has_map():
+            self.usb.apply_to_efi(self.result_dir)
+            config_data = self.u.read_file(config_file)
 
         self.u.progress_bar(title, steps, 4)
         files_to_remove = []
@@ -329,14 +334,16 @@ class OCPE:
             print("")
         
         print("* USB Mapping:")
-        print("    - Use USBToolBox tool to map USB ports.")
-        print("    - Add created UTBMap.kext into the {} folder.".format("EFI\\OC\\Kexts" if os.name == "nt" else "EFI/OC/Kexts"))
-        print("    - Remove UTBDefault.kext in the {} folder.".format("EFI\\OC\\Kexts" if os.name == "nt" else "EFI/OC/Kexts"))
-        print("    - Edit config.plist:")
-        print("        - Use ProperTree to open your config.plist.")
-        print("        - Run OC Snapshot by pressing Command/Ctrl + R.")
-        print("        - If you have more than 15 ports on a single controller, enable the XhciPortLimit patch.")
-        print("        - Save the file when finished.")
+        if self.usb.has_map():
+            print("    - UTBMap.kext replaced UTBDefault.kext in {}.".format("EFI\\OC\\Kexts" if os.name == "nt" else "EFI/OC/Kexts"))
+            print("    - The UTBDefault entry in config.plist now points at UTBMap.kext in the same position.")
+            print("    - USBToolBox.kext is still required and was left in place.")
+        else:
+            print("    - Ports are still on UTBDefault.kext, which enables every port.")
+            print("")
+            choice = self.u.request_input("Map USB ports now with USBToolBox? (Yes/no): ").strip().lower()
+            if choice in ("", "y", "yes"):
+                self.usb.run(self.result_dir)
         print("")
         self.u.request_input()
         self.u.open_folder(self.result_dir)
@@ -353,6 +360,13 @@ class OCPE:
         while True:
             self.u.head()
             print("")
+            print("  by theccraft-git")
+            print("")
+            print("  Many thanks to lzhoang2801 for the base script, OpCore-Simplify.")
+            print("  Many thanks to dhinakg for the base logic of USBToolBox.")
+            print("")
+            print("\033[1;96mUSB ports:\033[0m choose \033[1;96m7\033[0m to map them here. That builds UTBMap.kext and replaces UTBDefault in config.plist.")
+            print("")
             print("  Hardware Report: {}".format(hardware_report_path or 'Not selected'))
             if hardware_report_path:
                 print("")
@@ -363,6 +377,8 @@ class OCPE:
                     for device, _ in disabled_devices.items():
                         print("    - {}".format(device))
             print("")
+            print("  USB Map:         {}".format("UTBMap.kext ready" if self.usb.has_map() else "Not mapped (UTBDefault)"))
+            print("")
 
             print("1. Select Hardware Report")
             print("2. Select macOS Version")
@@ -370,6 +386,7 @@ class OCPE:
             print("4. Customize Kexts")
             print("5. Customize SMBIOS Model")
             print("6. Build OpenCore EFI")
+            print("7. Map USB Ports")
             print("")
             print("Q. Quit")
             print("")
@@ -377,6 +394,9 @@ class OCPE:
             option = self.u.request_input("Select an option: ")
             if option.lower() == "q":
                 self.u.exit_program()
+            if option == "7":
+                self.usb.run(self.result_dir)
+                continue
            
             if option == "1":
                 hardware_report_path, hardware_report = self.select_hardware_report()
@@ -439,7 +459,10 @@ class OCPE:
                 self.u.request_input("Press Enter to main menu...")
 
 if __name__ == '__main__':
-    update_status = updater.Updater().run_update()
+    # This local build adds in-app USB mapping. The upstream updater would
+    # replace OpCore-Simplify.py and remove that menu before it appears.
+    local_usb_mapper = os.path.join(os.path.dirname(os.path.realpath(__file__)), "Scripts", "usb_mapper.py")
+    update_status = "skipped" if os.path.isfile(local_usb_mapper) else updater.Updater().run_update()
     if update_status == "updated":
         os.execv(sys.executable, [sys.executable] + sys.argv)
     if update_status == "recovery_required":

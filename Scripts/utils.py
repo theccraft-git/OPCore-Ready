@@ -11,7 +11,7 @@ import zipfile
 import tempfile
 
 class Utils:
-    def __init__(self, script_name = "OpCore Simplify"):
+    def __init__(self, script_name = "OpCore-Ready"):
         self.script_name = script_name
 
     def clean_temporary_dir(self):
@@ -203,31 +203,23 @@ class Utils:
         lines = content.splitlines()
         rows = len(lines)
         cols = max(len(line) for line in lines) if lines else 0
-        print('\033[8;{};{}t'.format(max(rows+6, 30), max(cols+2, 100)))
+        print('\033[8;{};{}t'.format(max(rows+6, 42), max(cols+2, 100)))
 
     def exit_program(self):
         self.head()
         width = 68
         print("")
-        print("For more information, to report errors, or to contribute to the product:".center(width))
+        print("OpCore-Ready by theccraft-git".center(width))
         print("")
-
-        separator = "─" * (width - 4)
-        print(f" ┌{separator}┐ ")
-        
-        contacts = {
-            "Facebook": "https://www.facebook.com/macforce2601",
-            "Telegram": "https://t.me/lzhoang2601",
-            "GitHub": "https://github.com/lzhoang2801/OpCore-Simplify"
-        }
-        
-        for platform, link in contacts.items():
-            line = f" * {platform}: {link}"
-            print(f" │{line.ljust(width - 4)}│ ")
-
-        print(f" └{separator}┘ ")
+        print("Many thanks to lzhoang2801 for the base script, OpCore-Simplify.")
+        print("https://github.com/lzhoang2801/OpCore-Simplify")
         print("")
-        print("Thank you for using our program!".center(width))
+        print("Many thanks to dhinakg for the base logic of USBToolBox.")
+        print("https://github.com/USBToolBox/tool")
+        print("")
+        print("GitHub: https://github.com/theccraft-git")
+        print("")
+        print("Thank you for using OpCore-Ready!".center(width))
         print("")
         self.request_input("Press Enter to exit.".center(width))
         sys.exit(0)
